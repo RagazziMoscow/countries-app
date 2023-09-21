@@ -7,17 +7,17 @@
     <div>
       <v-card outlined class="my-4">
         <v-card-title>Regions</v-card-title>
-        <VueEcharts :option="regionsChartOptions" :init-option="InitOptions" :ei.sync="EIRegions" />
+        <VueEcharts :option="regionsChartOptions" :init-option="initOptions" :ei.sync="EIRegions" />
       </v-card>
 
       <v-card outlined class="my-4">
         <v-card-title>Currencies</v-card-title>
-        <VueEcharts :option="currenciesChartOptions" :init-option="InitOptions" :ei.sync="EICurrencies" />
+        <VueEcharts :option="currenciesChartOptions" :init-option="initOptions" :ei.sync="EICurrencies" />
       </v-card>
 
       <v-card outlined class="my-4">
         <v-card-title>Population</v-card-title>
-        <VueEcharts :option="populationChartOptions" :init-option="InitOptions" :ei.sync="EIPopulation" />
+        <VueEcharts :option="populationChartOptions" :init-option="initOptions" :ei.sync="EIPopulation" />
       </v-card>
     </div>
   </div>
@@ -30,6 +30,16 @@ import Helper from "@/mixins/Helper";
 
 import Country from "@/models/Country";
 
+const ECHARTS_OPTIONS = {
+  width: 1200,
+  height: 400
+};
+
+const ECHARTS_MOBILE_OPTIONS = {
+  width: 250,
+  height: 200
+};
+
 @Component
 export default class Analytics extends Mixins(Helper) {
   @State readonly countries!: Country[];
@@ -37,6 +47,7 @@ export default class Analytics extends Mixins(Helper) {
   @Action readonly loadAllCountries!: () => Promise<void>;
 
   public isLoading = false;
+  public initOptions = (window.innerWidth) <= 600 ? ECHARTS_MOBILE_OPTIONS : ECHARTS_OPTIONS;
 
   /* eslint-disable */
   public regionsChartOptions: echarts.EChartOption = {
@@ -57,33 +68,24 @@ export default class Analytics extends Mixins(Helper) {
     series: [{ data: [], type: "line" }]
   };
 
-  public echartsInitOptions = {
-    width: 1200,
-    height: 400
-  };
-
-  public echartsMobileInitOptions = {
-    width: 250,
-    height: 200
-  };
-
   /* eslint-disable */
   public EIRegions: echarts.ECharts = {} as echarts.ECharts;
   public EICurrencies: echarts.ECharts = {} as echarts.ECharts;
   public EIPopulation: echarts.ECharts = {} as echarts.ECharts;
 
-  public get InitOptions() {
-    const isMobile = window.innerWidth <= 600;
-    return isMobile ? this.echartsMobileInitOptions : this.echartsInitOptions;
-  }
-
   private async created(): Promise<void> {
+    window.addEventListener("resize", this.onResize, false);
+
     this.isLoading = true;
     await this.loadCountries();
     this.prepareRegions();
     this.prepareCurrencies();
     this.preparePopulations();
     this.isLoading = false;
+  }
+
+  private onResize(): void {
+    this.initOptions = (window.innerWidth) <= 600 ? ECHARTS_MOBILE_OPTIONS : ECHARTS_OPTIONS;
   }
 
   private async loadCountries(): Promise<void> {
@@ -121,8 +123,20 @@ export default class Analytics extends Mixins(Helper) {
     const currencies = Object.keys(groups);
     const currenciesValues = Object.values(groups).map((array) => array.length);
     const options: echarts.EChartOption = {
-      xAxis: { type: "category", data: currencies  },
-      series: [ { data: currenciesValues, type: "line" } ]
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow'
+        }
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: { type: "category", data: currencies, axisTick: { alignWithLabel: true } },
+      series: [ { data: currenciesValues, type: 'bar', barWidth: '60%', } ]
     };
 
     this.EICurrencies.setOption(options);

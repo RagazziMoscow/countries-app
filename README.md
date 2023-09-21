@@ -1,5 +1,11 @@
 # countries-app
 
+## Project run
+```
+docker-compose up
+```
+You will see the result typing in your browser: `localhost:49160`
+
 ## Project setup
 ```
 npm install

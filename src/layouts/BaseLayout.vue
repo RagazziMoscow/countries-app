@@ -1,12 +1,12 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark>
-      <div v-if="currentUser">
+      <div v-if="isLoggedIn">
         <router-link to="/" tag="span" class="text-h6">Home</router-link>
       </div>
 
       <v-spacer></v-spacer>
-      <buttons v-if="currentUser" :buttons="buttons" />
+      <buttons v-if="isLoggedIn" :buttons="buttons" />
     </v-app-bar>
 
     <v-main>
@@ -28,7 +28,7 @@ import Buttons from "@/components/Buttons.vue";
   components: { Buttons }
 })
 export default class BaseLayout extends Vue {
-  @State readonly currentUser!: User | null;
+  @State readonly isLoggedIn!: boolean;
 
   @Mutation readonly setIsLoggedIn!: (isLoggedIn: boolean) => void;
   @Mutation readonly setCurrentUser!: (user: User | null) => void;

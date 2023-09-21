@@ -5,7 +5,7 @@
         <v-text-field
           v-model="userName"
           :rules="userNameRules"
-          label="User name"
+          label="Username"
           outlined
           required
         />
