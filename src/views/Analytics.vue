@@ -84,9 +84,9 @@ export default class Analytics extends Mixins(Helper) {
     this.isLoading = false;
   }
 
-    private destroyed() {
-      window.removeEventListener("resize", this.onResize, false);
-    }
+  private destroyed() {
+    window.removeEventListener("resize", this.onResize, false);
+  }
 
   private onResize(): void {
     this.initOptions = (window.innerWidth) <= 600 ? ECHARTS_MOBILE_OPTIONS : ECHARTS_OPTIONS;

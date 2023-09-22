@@ -31,10 +31,11 @@ import Validation from "@/mixins/Validation";
 
 import Button from "@/models/Button";
 import User from "@/models/User";
-import Buttons from "@/components/Buttons.vue";
 import { ValidationRule, ValidationFunction } from "@/models/Validation";
 
-// TODO: try to use v-card
+import Buttons from "@/components/Buttons.vue";
+
+// TODO: move v-text-field to a separate component FormField
 
 @Component({
   components: { Buttons }
@@ -98,9 +99,4 @@ export default class Register extends Mixins(Validation) {
     align-items: center;
     height: 70vh;
   }
-
-  /*.form {*/
-  /*  width: 500px;*/
-  /*  max-width: 70vw;*/
-  /*}*/
 </style>
