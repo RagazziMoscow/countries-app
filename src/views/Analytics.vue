@@ -31,7 +31,7 @@ import Helper from "@/mixins/Helper";
 import Country from "@/models/Country";
 
 const ECHARTS_OPTIONS = {
-  width: 1200,
+  width: 1000,
   height: 400
 };
 
@@ -83,6 +83,10 @@ export default class Analytics extends Mixins(Helper) {
     this.preparePopulations();
     this.isLoading = false;
   }
+
+    private destroyed() {
+      window.removeEventListener("resize", this.onResize, false);
+    }
 
   private onResize(): void {
     this.initOptions = (window.innerWidth) <= 600 ? ECHARTS_MOBILE_OPTIONS : ECHARTS_OPTIONS;

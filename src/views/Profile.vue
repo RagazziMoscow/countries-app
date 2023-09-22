@@ -63,7 +63,7 @@ export default class Profile extends Mixins(Validation) {
         loading: this.isSavingUser
       },
       {
-        title: "Go Back",
+        title: "Cancel",
         action: this.goBack,
         color: "error"
       }

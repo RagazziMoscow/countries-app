@@ -2,7 +2,9 @@
   <v-app>
     <v-app-bar app color="primary" dark>
       <div v-if="isLoggedIn">
-        <router-link to="/" tag="span" class="text-h6">Home</router-link>
+        <v-btn icon to="/">
+          <v-icon>mdi-home-circle</v-icon>
+        </v-btn>
       </div>
 
       <v-spacer></v-spacer>
